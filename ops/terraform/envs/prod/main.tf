@@ -21,7 +21,8 @@ module "asg" {
   desired_capacity    = var.desired_capacity
   max_size            = var.max_size
   min_size            = var.min_size
-
+  
+  depends_on = [module.rds]
 }
 
 module "rds" {

@@ -15,9 +15,9 @@ resource "aws_rds_cluster" "postgresql" {
   engine                  = "aurora-postgresql"
   engine_mode             = "provisioned"
   availability_zones      = var.azs
-  database_name           = "mydb"
-  master_username         = "foo"
-  master_password         = "must_be_eight_characters"
+  database_name           = "bun_db"
+  master_username         = "postgres"
+  master_password         = "mysecretpassword"
   backup_retention_period = 7
   preferred_backup_window = "07:00-09:00"
   skip_final_snapshot     = true
