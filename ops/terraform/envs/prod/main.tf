@@ -24,12 +24,12 @@ module "asg" {
   
 }
 
-module "rds" {
-  source                = "../../modules/rds"
-  project_name          = var.project_name
-  db_subnets_ids        = module.vpc.db_private_subnets_ids
-  azs                   = var.azs
-  private_subnets_cidrs = var.private_subnets_cidrs
-  vpc_id                = module.vpc.vpc_id
-  private_security_group_id = module.asg.private_security_group_id
-}
+# module "rds" {
+#   source                = "../../modules/rds"
+#   project_name          = var.project_name
+#   db_subnets_ids        = module.vpc.db_private_subnets_ids
+#   azs                   = var.azs
+#   private_subnets_cidrs = var.private_subnets_cidrs
+#   vpc_id                = module.vpc.vpc_id
+#   private_security_group_id = module.asg.private_security_group_id
+# }

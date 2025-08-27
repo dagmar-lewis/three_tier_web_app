@@ -1,11 +1,10 @@
 #!/bin/bash
 
-sudo apt install unzip
+sudo apt update
 
-curl -fsSL https://bun.sh/install | bash
+sudo apt install nodejs npm
 
-echo 'export PATH="$HOME/.bun/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
+    sudo npm install -g pnpm
 
 cd home/ubuntu
 
@@ -15,8 +14,8 @@ cd three_tier_web_app
 
 cd frontend
 
-bun install
+pnpm install
 
-bun run dev
+pnpm run dev
 
 
