@@ -1,13 +1,15 @@
 #!/bin/bash
 
-sudo apt install unzip
+cd home/ubuntu
+
+sudo apt update
+
+sudo apt install unzip -y
 
 curl -fsSL https://bun.sh/install | bash
 
-echo 'export PATH="$HOME/.bun/bin:$PATH"' >> ~/.bashrc
+sudo echo 'export PATH="$HOME/.bun/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
-
-cd home/ubuntu
 
 git clone https://github.com/dagmar-lewis/three_tier_web_app.git
 
@@ -15,7 +17,7 @@ cd three_tier_web_app
 
 cd backend
 
-bun install
+sudo bun install
 
-bun run dev
+sudo bun run dev
 

@@ -95,7 +95,7 @@ resource "aws_lb" "private" {
 
 resource "aws_lb_listener" "public" {
   load_balancer_arn = aws_lb.public.arn
-  port              = 80
+  port              = 3000
   protocol          = "TCP"
 
   default_action {
@@ -106,7 +106,7 @@ resource "aws_lb_listener" "public" {
 
 resource "aws_lb_listener" "private" {
   load_balancer_arn = aws_lb.private.arn
-  port              = 80
+  port              = 3000
   protocol          = "TCP"
 
   default_action {
