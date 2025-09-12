@@ -58,19 +58,19 @@ variable "instance_type" {
 variable "desired_capacity" {
   description = "Auto scaling group desired capacity"
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "max_size" {
   description = "Auto scaling group max size"
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "min_size" {
   description = "Auto scaling group min size"
   type        = number
-  default     = 1
+  default     = 2
 }
 
 

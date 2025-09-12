@@ -95,7 +95,7 @@ resource "aws_lb" "private" {
 
 resource "aws_lb_listener" "public" {
   load_balancer_arn = aws_lb.public.arn
-  port              = 3000
+  port              = 80
   protocol          = "TCP"
 
   default_action {
@@ -106,7 +106,7 @@ resource "aws_lb_listener" "public" {
 
 resource "aws_lb_listener" "private" {
   load_balancer_arn = aws_lb.private.arn
-  port              = 3000
+  port              = 80
   protocol          = "TCP"
 
   default_action {
@@ -117,7 +117,7 @@ resource "aws_lb_listener" "private" {
 
 resource "aws_lb_target_group" "public" {
   name        = "${var.project_name}-public-tg"
-  port        = 3000
+  port        = 8080
   protocol    = "TCP"
   target_type = "instance"
   vpc_id      = var.vpc_id
@@ -126,7 +126,7 @@ resource "aws_lb_target_group" "public" {
 
 resource "aws_lb_target_group" "private" {
   name        = "${var.project_name}-private-tg"
-  port        = 3000
+  port        = 8080
   protocol    = "TCP"
   target_type = "instance"
   vpc_id      = var.vpc_id
@@ -138,8 +138,8 @@ resource "aws_security_group" "public-lb" {
   name   = "${var.project_name}-public-lb-sg"
   vpc_id = var.vpc_id
   ingress {
-    from_port   = 3000
-    to_port     = 3000
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -156,10 +156,10 @@ resource "aws_security_group" "private-lb" {
   name   = "${var.project_name}-ptivate-lb-sg"
   vpc_id = var.vpc_id
   ingress {
-    from_port   = 3000
-    to_port     = 3000
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.public-instance.id]
   }
 
   egress {
@@ -174,8 +174,8 @@ resource "aws_security_group" "public-instance" {
   name   = "${var.project_name}-public-instance-sg"
   vpc_id = var.vpc_id
   ingress {
-    from_port       = 3000
-    to_port         = 3000
+    from_port       = 8080
+    to_port         = 8080
     protocol        = "tcp"
     security_groups = [aws_security_group.public-lb.id]
   }
@@ -194,8 +194,8 @@ resource "aws_security_group" "private-instance" {
   name   = "${var.project_name}-private-instance-sg"
   vpc_id = var.vpc_id
   ingress {
-    from_port       = 3000
-    to_port         = 3000
+    from_port       = 8080
+    to_port         = 8080
     protocol        = "tcp"
     security_groups = [aws_security_group.private-lb.id]
   }
