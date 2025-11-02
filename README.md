@@ -4,6 +4,8 @@ This project deploys a three-tier web application on AWS using Terraform. The ap
 
 ## Architecture
 
+ ![](./3%20Tier%20Web%20App.drawio.png)
+
 The architecture consists of the following components:
 
 *   **VPC**: A custom VPC with public, private, and database subnets distributed across multiple availability zones.
