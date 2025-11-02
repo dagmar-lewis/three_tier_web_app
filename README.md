@@ -1,4 +1,4 @@
-# Three-Tier Web Application
+# Three Tier Web Architecture
 
 This project deploys a three-tier web application on AWS using Terraform. The application is a simple containerized service that is deployed in a highly available and scalable architecture.
 
@@ -30,7 +30,7 @@ The architecture consists of the following components:
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/dagmar-lewis/three_tier_web_app
     cd three_tier_web_app
     ```
 
