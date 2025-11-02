@@ -1,5 +1,3 @@
-
-
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
 
@@ -14,7 +12,7 @@ resource "aws_vpc" "main" {
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = "${var.project_name}-igw"
+    Name = "${var.project_name}-igw-${var.env}"
   }
 }
 
@@ -30,7 +28,7 @@ resource "aws_nat_gateway" "private" {
 resource "aws_eip" "name" {
   domain       = "vpc"
   tags = {
-    name = "${var.project_name}-eip"
+    name = "${var.project_name}-eip-${var.env}"
   }
 }
 
@@ -42,7 +40,7 @@ resource "aws_subnet" "public" {
 
   map_public_ip_on_launch = true
   tags = {
-    Name = "${var.project_name}-public-subnet-${replace(each.value, "/[^a-zA-Z0-9]/", "-")}"
+    Name = "${var.project_name}-public-subnet-${var.env}${replace(each.value, "/[^a-zA-Z0-9]/", "-")}"
   }
 }
 
@@ -53,7 +51,7 @@ resource "aws_subnet" "private" {
   availability_zone = element(var.azs, index(var.private_subnets_cidrs, each.value) % length(var.azs))
 
   tags = {
-    Name = "${var.project_name}-private-subnet-${replace(each.value, "/[^a-zA-Z0-9]/", "-")}"
+    Name = "${var.project_name}-private-subnet-${var.env}${replace(each.value, "/[^a-zA-Z0-9]/", "-")}"
   }
 }
 
@@ -66,7 +64,7 @@ resource "aws_route_table" "public" {
       }
 
   tags = {
-    Name = "${var.project_name}-public-route-table"
+    Name = "${var.project_name}-public-route-table-${var.env}"
   }
 }
 
@@ -78,7 +76,7 @@ resource "aws_route_table" "private" {
       }
 
   tags = {
-    Name = "${var.project_name}-private-route-table"
+    Name = "${var.project_name}-private-route-table-${var.env}"
   }
 }
 
@@ -105,13 +103,13 @@ resource "aws_subnet" "db-private" {
   availability_zone = element(var.azs, index(var.db_private_subnets_cidrs, each.value) % length(var.azs))
 
   tags = {
-    Name = "${var.project_name}-db-private-subnet-${replace(each.value, "/[^a-zA-Z0-9]/", "-")}"
+    Name = "${var.project_name}-db-private-subnet-${var.env}${replace(each.value, "/[^a-zA-Z0-9]/", "-")}"
   }
 }
 
 resource "aws_security_group" "aurora_sg" {
   vpc_id = aws_vpc.main.id
-  name   = "${var.project_name}-aurora-sg"
+  name   = "${var.project_name}-aurora-sg-${var.env}"
 
   ingress {
     from_port   = 5432 

@@ -1,5 +1,5 @@
 resource "aws_launch_template" "public" {
-  name_prefix   = var.project_name
+  name_prefix   = "${var.project_name}-${var.env}"
   image_id      = var.ami
   instance_type = var.instance_type
   user_data     = filebase64("../../../scripts/public_launch_template.sh")
@@ -21,7 +21,7 @@ resource "aws_launch_template" "public" {
 }
 
 resource "aws_launch_template" "private" {
-  name_prefix   = var.project_name
+  name_prefix   = "${var.project_name}-${var.env}"
   image_id      = var.ami
   instance_type = var.instance_type
   user_data     = filebase64("../../../scripts/private_launch_template.sh")
@@ -41,6 +41,7 @@ resource "aws_launch_template" "private" {
 }
 
 resource "aws_autoscaling_group" "public" {
+  name                = "${var.project_name}-${var.env}"
   desired_capacity    = var.desired_capacity
   max_size            = var.max_size
   min_size            = var.min_size
@@ -68,7 +69,7 @@ resource "aws_autoscaling_group" "private" {
 }
 
 resource "aws_lb" "public" {
-  name               = "${var.project_name}-public-lb"
+  name               = "${var.project_name}-public-lb-${var.env}"
   internal           = false
   load_balancer_type = "network"
   subnets            = var.public_subnets_ids
@@ -76,12 +77,12 @@ resource "aws_lb" "public" {
   enable_deletion_protection = false
   security_groups            = [aws_security_group.public-lb.id]
   tags = {
-    Name = "${var.project_name}"
+    Name = "${var.project_name}-${var.env}"
   }
 }
 
 resource "aws_lb" "private" {
-  name                       = "${var.project_name}-private-lb"
+  name                       = "${var.project_name}-private-lb-${var.env}"
   internal                   = true
   load_balancer_type         = "network"
   subnets                    = var.private_subnets_ids
@@ -89,7 +90,7 @@ resource "aws_lb" "private" {
   enable_deletion_protection = false
 
   tags = {
-    Name = "${var.project_name}"
+    Name = "${var.project_name}-${var.env}"
   }
 }
 
@@ -116,7 +117,7 @@ resource "aws_lb_listener" "private" {
 }
 
 resource "aws_lb_target_group" "public" {
-  name        = "${var.project_name}-public-tg"
+  name        = "${var.project_name}-public-tg-${var.env}"
   port        = 8080
   protocol    = "TCP"
   target_type = "instance"
@@ -125,7 +126,7 @@ resource "aws_lb_target_group" "public" {
 }
 
 resource "aws_lb_target_group" "private" {
-  name        = "${var.project_name}-private-tg"
+  name        = "${var.project_name}-private-tg-${var.env}"
   port        = 8080
   protocol    = "TCP"
   target_type = "instance"
@@ -135,7 +136,7 @@ resource "aws_lb_target_group" "private" {
 
 
 resource "aws_security_group" "public-lb" {
-  name   = "${var.project_name}-public-lb-sg"
+  name   = "${var.project_name}-public-lb-sg-${var.env}"
   vpc_id = var.vpc_id
   ingress {
     from_port   = 80
@@ -153,12 +154,12 @@ resource "aws_security_group" "public-lb" {
 }
 
 resource "aws_security_group" "private-lb" {
-  name   = "${var.project_name}-ptivate-lb-sg"
+  name   = "${var.project_name}-ptivate-lb-sg-${var.env}"
   vpc_id = var.vpc_id
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
     security_groups = [aws_security_group.public-instance.id]
   }
 
@@ -171,7 +172,7 @@ resource "aws_security_group" "private-lb" {
 }
 
 resource "aws_security_group" "public-instance" {
-  name   = "${var.project_name}-public-instance-sg"
+  name   = "${var.project_name}-public-instance-sg-${var.env}"
   vpc_id = var.vpc_id
   ingress {
     from_port       = 8080
@@ -191,7 +192,7 @@ resource "aws_security_group" "public-instance" {
 }
 
 resource "aws_security_group" "private-instance" {
-  name   = "${var.project_name}-private-instance-sg"
+  name   = "${var.project_name}-private-instance-sg-${var.env}"
   vpc_id = var.vpc_id
   ingress {
     from_port       = 8080

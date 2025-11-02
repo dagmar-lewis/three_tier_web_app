@@ -35,9 +35,8 @@ variable "azs" {
 }
 
 variable "env" {
-  description = "Default ENV"
+  description = "ENV"
   type        = string
-  default     = "dev"
 }
 
 

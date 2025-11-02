@@ -7,7 +7,7 @@ variable "region" {
 variable "project_name" {
   description = "Name of the project"
   type        = string
-  default     = "three-tier-web-app"
+  default     = "three-tier"
 }
 
 variable "vpc_cidr" {
@@ -76,7 +76,7 @@ variable "min_size" {
 
 
 variable "env" {
-  description = "Default ENV"
+  description = "ENV"
   type        = string
   default     = "prod"
 }

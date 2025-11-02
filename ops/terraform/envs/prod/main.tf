@@ -7,7 +7,7 @@ module "vpc" {
   public_subnets_cidrs     = var.public_subnets_cidrs
   db_private_subnets_cidrs = var.db_private_subnets_cidrs
   azs                      = var.azs
-
+  env                      = var.env
 }
 
 module "asg" {
@@ -21,15 +21,16 @@ module "asg" {
   desired_capacity    = var.desired_capacity
   max_size            = var.max_size
   min_size            = var.min_size
-  
+  env                 = var.env
 }
 
-# module "rds" {
-#   source                = "../../modules/rds"
-#   project_name          = var.project_name
-#   db_subnets_ids        = module.vpc.db_private_subnets_ids
-#   azs                   = var.azs
-#   private_subnets_cidrs = var.private_subnets_cidrs
-#   vpc_id                = module.vpc.vpc_id
-#   private_security_group_id = module.asg.private_security_group_id
-# }
+module "rds" {
+  source                    = "../../modules/rds"
+  project_name              = var.project_name
+  db_subnets_ids            = module.vpc.db_private_subnets_ids
+  azs                       = var.azs
+  private_subnets_cidrs     = var.private_subnets_cidrs
+  vpc_id                    = module.vpc.vpc_id
+  private_security_group_id = module.asg.private_security_group_id
+  env                       = var.env
+}

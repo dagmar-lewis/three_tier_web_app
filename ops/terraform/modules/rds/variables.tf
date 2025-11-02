@@ -27,6 +27,9 @@ variable "private_security_group_id" {
   description = "value"
   type = string
 }
-
+variable "env" {
+  description = "ENV"
+  type        = string
+}
 
 

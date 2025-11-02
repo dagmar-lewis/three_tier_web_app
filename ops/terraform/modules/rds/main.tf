@@ -1,7 +1,7 @@
 
 resource "aws_rds_cluster_instance" "cluster_instance" {
   count                = 1
-  identifier           = "${var.project_name}-${count.index}"
+  identifier           = "${var.project_name}-${count.index}-${var.env}"
   cluster_identifier   = aws_rds_cluster.postgresql.id
   instance_class       = "db.t3.medium"
   engine               = aws_rds_cluster.postgresql.engine
@@ -11,7 +11,7 @@ resource "aws_rds_cluster_instance" "cluster_instance" {
 }
 
 resource "aws_rds_cluster" "postgresql" {
-  cluster_identifier      = "${var.project_name}-aurora-cluster"
+  cluster_identifier      = "${var.project_name}-aurora-cluster-${var.env}"
   engine                  = "aurora-postgresql"
   engine_mode             = "provisioned"
   availability_zones      = var.azs
@@ -26,11 +26,11 @@ resource "aws_rds_cluster" "postgresql" {
 }
 
 resource "aws_db_subnet_group" "main" {
-  name       = "${var.project_name}"
+  name       = "${var.project_name}-${var.env}"
   subnet_ids = var.db_subnets_ids
 
   tags = {
-    Name = "${var.project_name}-DB subnet group"
+    Name = "${var.project_name}-DB subnet group-${var.env}"
   }
 }
 
